@@ -1,0 +1,376 @@
+/* 00-tokens.css — 変数・デザイントークン — 数値と色の調整はこのファイルだけで済む */
+
+body {
+  /* Bases */
+  --bases-table-column-border-width: 0px;
+  --bases-header-border-width: 0;
+  /* Blockquotes — 色はこの 2 つが唯一の出所。ライブプレビュー（.HyperMD-quote）と
+  読み取りビュー（blockquote）の両方がここを見るので、片方だけずれることがない */
+  --blockquote-style: normal;
+  --blockquote-color: var(--text-normal);
+  --blockquote-border-thickness: 3px;
+  /* 引用の左インデント。ライブプレビューのコアは 0.75em を使うので合わせる */
+  --blockquote-padding-left: 0.75em;
+  --blockquote-border-color: var(--text-normal);
+  /* Embeds */
+  --embed-block-shadow-hover: none;
+  /* Font sizes */
+  --font-ui-smaller: 11px;
+  /* Font weights */
+  --normal-weight: 400;
+  /* Headings */
+  --inline-title-margin-bottom: 0.6em;
+  --h1-size: 1.875em;
+  --h2-size: 1.5em;
+  --h3-size: 1.25em;
+  --h4-size: 1.05em;
+  --h5-size: 0.95em;
+  --h6-size: 0.9em;
+  --h1-weight: 700;
+  --h2-weight: 600;
+  --h3-weight: 600;
+  --h4-weight: 600;
+  --h5-weight: 600;
+  --h6-weight: 600;
+  --h1-variant: normal;
+  --h2-variant: normal;
+  --h3-variant: normal;
+  --h4-variant: normal;
+  --h5-variant: normal;
+  --h6-variant: normal;
+  --h1-style: normal;
+  --h2-style: normal;
+  --h3-style: normal;
+  --h4-style: normal;
+  --h5-style: normal;
+  --h6-style: normal;
+  /* Line widths */
+  --line-width: 54rem;
+  --line-height: 1.7;
+  --line-height-normal: var(--line-height);
+  --max-width: 88%;
+  /* Icons */
+  /* Quotes and transclusions */
+  --nested-padding: 1.1em;
+  /* Lists */
+  --folding-offset: 32px;
+  --list-indent: 1.6em;
+  --list-spacing: 0.1em;
+  --input-height: 32px;
+  --header-height: 40px;
+  /* Metadata */
+  --metadata-label-width-multiplier: 9;
+  --metadata-label-width: calc(var(--font-adaptive-small) * var(--metadata-label-width-multiplier));
+  --metadata-label-font-size: var(--font-adaptive-small);
+  --metadata-input-font-size: var(--font-adaptive-small);
+  /* Mobile sidebars */
+  --mobile-left-sidebar-width: 280pt;
+  --mobile-right-sidebar-width: 240pt;
+  /* Image opacity in dark mode */
+  --image-muted: 0.7;
+  --image-radius: 4px;
+  /* Spacing */
+  /* ライブプレビューではソースの空行 1 行がそのまま隙間になる。読み取りビューには
+  この空行が存在しないので、余白を揃えるときは常にこの高さが基準になる */
+  --blank-line: calc(var(--line-height) * var(--font-text-size));
+  /* 見出しの「上」に、空行 1 行ぶんへさらに足す余白。見出し自身の em で効く。
+  ライブプレビューでは HyperMD-header の padding-top、読み取りビューでは
+  --heading-spacing 経由の margin-top として、同じ見た目になるよう使う */
+  --heading-gap: 1.7em;
+  /* コアが「段落・リスト・表・コードの直後の見出し」に使う変数。
+  ライブプレビューの（空行 + --heading-gap）と同じ値に合わせる */
+  --heading-spacing: calc(var(--blank-line) + var(--heading-gap));
+  /* ブロック間の余白。ライブプレビューではソースの空行がそのまま 1 行分（= --line-height）
+  の隙間になり、これは CSS では詰められない。読み取りビュー側をその高さに合わせることで、
+  埋め込み・ホバープレビュー・callout の中身が本文と同じ間隔で並ぶ */
+  --p-spacing: calc(var(--line-height) * 1em);
+  /* インラインタイトル / プロパティと本文の間。両ビューで共有する */
+  /* プロパティ欄と本文の間。両ビューとも .metadata-container の margin-bottom が
+  この値。読み取りビューでは先頭ブロックの margin と相殺されるので、先頭ブロックの
+  余白を計算するときに足し込む必要がある */
+  --meta-gap: calc(2 * var(--font-text-size));
+  --border-width: 1px;
+  --table-border-width: 1px;
+  --table-selection: var(--text-selection);
+  --table-selection-border-color: var(--text-accent);
+  --table-selection-border-width: 0px;
+  --table-selection-border-radius: 0px;
+  --table-drag-handle-background-active: var(--text-selection);
+  --table-drag-handle-color-active: var(--text-accent);
+  --table-add-button-border-width: 0px;
+  /* Readable line length off */
+  --file-margins-y: var(--size-4-2);
+}
+
+.is-phone {
+  /* Metadata */
+  --metadata-label-font-size: var(--font-adaptive-smaller);
+  --metadata-input-font-size: var(--font-adaptive-smaller);
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min-device-pixel-ratio: 2) {
+  .is-phone {
+    --border-width: 0.75px;
+  }
+}
+
+/* 動的カラー — 背景・罫線・各種の濃淡は下の base / accent から HSL で自動生成される。
+base は背景と文字と罫線、accent はリンクと操作要素。実際の配色は 80-colors.css。 */
+
+body {
+  --base-h: 0;
+  /* Base hue */
+  --base-s: 0%;
+  /* Base saturation */
+  --base-l: 96%;
+  /* Base lightness - 100 is white */
+  /* --accent-h/s/l は定義しない。設定 → 外観 → アクセントカラー から渡ってくる。
+  万一渡らなかったときのため、下の --ax* 側で fallback を持たせている。 */
+}
+
+.theme-dark,
+.theme-light {
+  --color-red-rgb: 208, 66, 85;
+  --color-orange-rgb: 213, 118, 63;
+  --color-yellow-rgb: 229, 181, 103;
+  --color-green-rgb: 168, 195, 115;
+  --color-cyan-rgb: 115, 187, 178;
+  --color-blue-rgb: 108, 153, 187;
+  --color-purple-rgb: 158, 134, 200;
+  --color-pink-rgb: 176, 82, 121;
+  --color-red: #d04255;
+  --color-orange: #d5763f;
+  --color-yellow: #e5b567;
+  --color-green: #a8c373;
+  --color-cyan: #73bbb2;
+  --color-blue: #6c99bb;
+  --color-purple: #9e86c8;
+  --color-pink: #b05279;
+}
+
+.theme-light {
+  --bg1: white;
+  --bg2: hsl(var(--base-h), var(--base-s), var(--base-l));
+  --bg3: hsla(var(--base-h), var(--base-s), calc(var(--base-l) - 50%), 0.12);
+  --ui1: hsl(var(--base-h), var(--base-s), calc(var(--base-l) - 6%));
+  --ui2: hsl(var(--base-h), var(--base-s), calc(var(--base-l) - 12%));
+  --ui3: hsl(var(--base-h), var(--base-s), calc(var(--base-l) - 20%));
+  --tx1: hsl(var(--base-h), var(--base-s), calc(var(--base-l) - 90%));
+  --tx2: hsl(var(--base-h), calc(var(--base-s) - 20%), calc(var(--base-l) - 50%));
+  --tx3: hsl(var(--base-h), calc(var(--base-s) - 10%), calc(var(--base-l) - 25%));
+  --ax1: hsl(var(--accent-h, 211), var(--accent-s, 33%), var(--accent-l, 62%));
+  --ax2: hsl(var(--accent-h, 211), var(--accent-s, 33%), calc(var(--accent-l, 62%) - 8%));
+  --ax3: hsl(var(--accent-h, 211), var(--accent-s, 33%), calc(var(--accent-l, 62%) + 6%));
+  --hl1: hsla(var(--accent-h, 211), 50%, calc(var(--base-l) - 20%), 30%);
+  --hl2: rgba(255, 225, 0, 0.5);
+  --sp1: white;
+}
+
+.theme-dark {
+  --base-l: 15%;
+  --bg1: hsl(var(--base-h), var(--base-s), var(--base-l));
+  --bg2: hsl(var(--base-h), var(--base-s), calc(var(--base-l) - 2%));
+  --bg3: hsla(var(--base-h), var(--base-s), calc(var(--base-l) + 40%), 0.12);
+  --ui1: hsl(var(--base-h), var(--base-s), calc(var(--base-l) + 6%));
+  --ui2: hsl(var(--base-h), var(--base-s), calc(var(--base-l) + 12%));
+  --ui3: hsl(var(--base-h), var(--base-s), calc(var(--base-l) + 20%));
+  --tx1: hsl(var(--base-h), calc(var(--base-s) - 10%), calc(var(--base-l) + 67%));
+  --tx2: hsl(var(--base-h), calc(var(--base-s) - 20%), calc(var(--base-l) + 45%));
+  --tx3: hsl(var(--base-h), calc(var(--base-s) - 10%), calc(var(--base-l) + 20%));
+  --ax1: hsl(var(--accent-h, 211), var(--accent-s, 33%), var(--accent-l, 62%));
+  --ax2: hsl(var(--accent-h, 211), var(--accent-s, 33%), calc(var(--accent-l, 62%) + 8%));
+  --ax3: hsl(var(--accent-h, 211), var(--accent-s, 33%), calc(var(--accent-l, 62%) - 5%));
+  --hl1: hsla(var(--accent-h, 211), 50%, 40%, 30%);
+  --hl2: rgba(255, 177, 80, 0.3);
+  --sp1: white;
+}
+
+/* Map colors to semantic Obsidian names */
+
+.theme-dark,
+.theme-light {
+  --bases-table-group-background: transparent;
+  --background-modifier-border-focus: var(--ui3);
+  --background-modifier-border-hover: var(--ui2);
+  --background-modifier-border: var(--ui1);
+  --mobile-sidebar-background: var(--bg1);
+  --background-modifier-form-field: var(--bg1);
+  --background-modifier-success: var(--color-green);
+  --background-modifier-hover: var(--bg3);
+  --background-modifier-active-hover: var(--bg3);
+  --background-primary: var(--bg1);
+  --background-primary-alt: var(--bg2);
+  --background-secondary: var(--bg2);
+  --background-secondary-alt: var(--bg1);
+  --checkbox-color: var(--ax3);
+  --code-normal: var(--tx1);
+  --divider-color: transparent;
+  --icon-color-active: var(--tx1);
+  --icon-color-focused: var(--tx1);
+  --icon-color-hover: var(--text-normal);
+  --icon-color: var(--tx2);
+  --interactive-normal: var(--ui1);
+  --interactive-accent-hover: var(--ax1);
+  --interactive-accent: var(--ax3);
+  --interactive-hover: var(--ui1);
+  --list-marker-color: var(--text-normal);
+  /* ul の点の直径。Obsidian は文字ではなく円を描いており、既定の 0.3em は
+  全角の本文に対して痩せて見える */
+  --list-bullet-size: 0.4em;
+  /* 表の罫線。--background-modifier-border (#3a3f42) は背景 #2f3437 に対して
+  コントラスト比 1.18:1 でほぼ見えない。2.51:1 まで上げて識別できるようにする */
+  --table-border-color: #6a7073;
+  /* 影は 2 段階だけ。色は --shadow-color（ライト/ダークで切替）を共有する。
+  Obsidian も同名を .theme-* で持つので body ではなくここで宣言しないと負ける */
+  --shadow-s: 0 1px 2px var(--shadow-color);
+  --shadow-l: 0 2px 8px var(--shadow-color), 0 8px 32px var(--shadow-color);
+  --nav-item-background-active: var(--bg3);
+  --nav-item-background-hover: var(--bg3);
+  --nav-item-color: var(--tx2);
+  --nav-item-color-active: var(--tx1);
+  --nav-item-color-hover: var(--tx1);
+  --nav-item-color-selected: var(--tx1);
+  --nav-collapse-icon-color: var(--tx2);
+  --nav-collapse-icon-color-collapsed: var(--tx2);
+  --nav-indentation-guide-color: var(--ui1);
+  --prompt-border-color: var(--ui3);
+  --quote-opening-modifier: var(--ui2);
+  --ribbon-background: var(--bg2);
+  --search-result-background: var(--bg1);
+  --tab-text-color-focused-active: var(--tx1);
+  --tab-outline-color: transparent;
+  --text-accent-hover: var(--ax2);
+  --text-accent: var(--ax1);
+  --text-error: var(--color-red);
+  --text-faint: var(--tx3);
+  --text-highlight-bg: var(--hl2);
+  --text-muted: var(--tx2);
+  --text-normal: var(--tx1);
+  --text-on-accent: var(--sp1);
+  --text-selection: var(--hl1);
+  --text-formatting: var(--tx3);
+  --titlebar-background: var(--bg2);
+  --titlebar-background-focused: var(--bg2);
+  --titlebar-text-color-focused: var(--tx1);
+  --vault-profile-color: var(--tx1);
+  --vault-profile-color-hover: var(--tx1);
+  --workspace-background-translucent: hsla(var(--base-h), var(--base-s), var(--base-l), 0.7);
+  --divider-color-hover: var(--interactive-accent);
+}
+
+.theme-dark .view-actions,
+.theme-light .view-actions {
+  --icon-color-active: var(--ax1);
+}
+
+.theme-light {
+  --background-modifier-cover: hsla(var(--base-h), calc(var(--base-s) - 70%), calc(var(--base-l) - 20%), 0.5);
+  /* Shadows */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.theme-dark {
+  --interactive-normal: var(--bg3);
+  --background-modifier-cover: hsla(var(--base-h), var(--base-s), calc(var(--base-l) - 12%), 0.5);
+  /* Shadows */
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.3);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --modal-border-color: var(--ui2);
+}
+
+/* Desktop font sizes */
+
+body {
+  --font-adaptive-normal: var(--font-text-size, var(--editor-font-size));
+  --font-adaptive-small: calc(var(--font-ui-small) * 1.07);
+  --font-adaptive-smaller: var(--font-ui-small);
+  --font-adaptive-smallest: var(--font-ui-smaller);
+  --line-width-wide: 66rem;
+  /* cssclasses: wide 用。--line-width より広いこと */
+  --table-text-size: 0.95em;
+  --bases-table-font-size: calc(var(--font-adaptive-normal) * 0.875);
+}
+
+/* Obsidian */
+
+/* Obsidian app */
+
+.bases-view {
+  --bases-table-font-size: var(--table-text-size);
+}
+
+/* ページ幅・角丸・モーション・影・アクセントの濃淡 */
+
+body {
+  --notion-page-padding-top: 56px;
+  --notion-page-padding-bottom: 96px;
+  --font-ui-small: 13px;
+  --radius-s: 3px;
+  --radius-m: 4px;
+  --radius-l: 6px;
+  --radius-xl: 10px;
+  --input-radius: 4px;
+  --modal-radius: 10px;
+  /* --checkbox-radius は 30-content.css で定義（後から読まれるのでここに書くと負ける） */
+  --code-size: 0.875em;
+  --code-radius: 4px;
+  --code-block-padding-y: 1em;
+  --code-block-padding-x: 1.2em;
+  --code-block-padding: var(--code-block-padding-y) var(--code-block-padding-x);
+  --code-block-line-height: 1.55;
+  --tag-radius: 999px;
+  --table-header-weight: 500;
+  --callout-radius: 4px;
+  --callout-border-width: 0px;
+  --callout-padding: 12px 14px;
+  --nav-item-size: 14px;
+  --nav-item-weight: 400;
+  --nav-item-weight-hover: 400;
+  --nav-item-weight-active: 500;
+  --nav-item-padding: 3px 8px 3px 12px;
+  --nav-indentation-guide-width: 1px;
+  --tab-outline-width: 0px;
+  --tab-radius-active: 6px 6px 0 0;
+  --tab-curve: 0px;
+  --icon-size: 16px;
+  --icon-stroke: 1.75px;
+  --notion-inline-code-color: #eb5757;
+  --notion-inline-code-bg: rgba(135, 131, 120, 0.15);
+  /* アクセントの薄め。選択中・アクティブの「面」はすべてこの 2 つで塗る */
+  --accent-tint: color-mix(in srgb, var(--interactive-accent) 14%, transparent);
+  --accent-tint-strong: color-mix(in srgb, var(--interactive-accent) 24%, transparent);
+  --caret-color: var(--interactive-accent);
+  /* サイドバー下部の vault 名は出さない。Obsidian コアが
+  body:not(.is-mobile) … で display を持つので、同じトークンで消す */
+  --vault-profile-display: none;
+  /* Bases の本文幅。表は列が多いので Markdown より広め。揃えるなら var(--line-width) */
+  --bases-content-width: 72rem;
+  /* モーション。Obsidian コアの --anim-* なのでコア UI の動きもまとめて揃う */
+  --anim-duration-superfast: 60ms;
+  --anim-duration-fast: 120ms;
+  --anim-duration-moderate: 200ms;
+  --anim-duration-slow: 280ms;
+  /* 減速主体。--anim-motion-jumpy は既定だと跳ね返るので同じカーブに潰す */
+  --anim-motion-smooth: cubic-bezier(0.2, 0, 0.2, 1);
+  --anim-motion-swing: cubic-bezier(0.2, 0, 0.2, 1);
+  --anim-motion-jumpy: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* OS 側で「動きを減らす」設定のときは全て止める */
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    --anim-duration-superfast: 0ms;
+    --anim-duration-fast: 0ms;
+    --anim-duration-moderate: 0ms;
+    --anim-duration-slow: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

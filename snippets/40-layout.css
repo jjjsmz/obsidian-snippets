@@ -1,0 +1,227 @@
+/* 40-layout.css — レイアウト — ページ幅 / 余白 / 埋め込み / ブロック幅 */
+
+body {
+  --content-margin: auto;
+  --content-margin-start: max(calc(50% - var(--line-width)/2), calc(50% - var(--max-width)/2));
+  --content-line-width: min(var(--line-width), var(--max-width));
+  --map-header-padding: 2px;
+}
+
+/* Line widths ------------------------------------ */
+
+/* Set overall context to 100% width */
+
+.markdown-preview-view .markdown-preview-sizer.markdown-preview-sizer {
+  max-width: 100%;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-content,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Set inner content to line width */
+
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer>.inline-title,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer>.embedded-backlinks,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer>.metadata-container {
+  max-width: var(--max-width);
+  width: var(--line-width);
+  margin-inline: var(--content-margin) !important;
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>*:not(div) {
+  max-width: var(--content-line-width);
+  margin-inline-start: var(--content-margin-start) !important;
+}
+
+/* File margins ------------------------------------ */
+
+/* 「読みやすい行の長さ」ON 時。左右は --content-margin の中央寄せが担うので 0。
+既定の `1rem 0 0 0` では上が詰まるので上下を広げている。 */
+.is-readable-line-width {
+  --file-margins: var(--notion-page-padding-top) 0 var(--notion-page-padding-bottom);
+}
+
+.is-mobile .markdown-preview-view {
+  --folding-offset: 0;
+}
+
+/* Embeds ------------------------------------ */
+
+.markdown-preview-view .inline-embed {
+  --max-width: 100%;
+}
+
+/* 表・画像・iframe などブロック要素の幅。変数で持つことで、全体 / ノート単位 /
+要素単位のどこに cssclasses を当てても同じ仕組みで効く。 */
+body {
+  --container-table-max-width: var(--max-width);
+  --table-max-width: none;
+  --table-width: auto;
+  --table-margin: inherit;
+  --table-wrapper-width: fit-content;
+  --container-dataview-table-width: var(--line-width);
+  --container-img-width: var(--line-width);
+  --container-img-max-width: var(--max-width);
+  --img-max-width: 100%;
+  /* because external images don't have a container */
+  --img-margin-start: var(--content-margin-start);
+  --img-line-width: var(--content-line-width);
+  --container-map-width: var(--line-width);
+  --container-map-max-width: var(--max-width);
+  --map-max-width: none;
+  --container-iframe-width: var(--line-width);
+  --container-iframe-max-width: var(--max-width);
+  --iframe-max-width: none;
+  /* Entire page */
+}
+
+body .wide {
+  --line-width: var(--line-width-wide);
+  --container-table-width: var(--line-width-wide);
+  --container-dataview-table-width: var(--line-width-wide);
+  --container-img-width: var(--line-width-wide);
+  --container-iframe-width: var(--line-width-wide);
+  --container-map-width: var(--line-width-wide);
+}
+
+body .max {
+  --line-width: var(--max-width);
+  --container-table-width: var(--max-width);
+  --container-dataview-table-width: var(--max-width);
+  --container-img-width: var(--max-width);
+  --container-iframe-width: var(--max-width);
+  --container-map-width: var(--max-width);
+}
+
+body {
+  --table-drag-space: 16px;
+  --container-table-margin: calc(var(--content-margin-start) - var(--table-drag-space));
+  --container-table-width: calc(var(--line-width) + var(--table-drag-space)*2);
+  --table-drag-padding: var(--table-drag-space);
+}
+
+.is-mobile {
+  --table-drag-space: 16px;
+  --container-table-max-width: calc(100% - var(--container-table-margin));
+}
+
+/* ブロック幅の適用（:has() を使うので Obsidian 1.1.9 以上が必要） */
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content .cm-table-widget,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div:has(table),
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer .cm-table-widget,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div:has(table) {
+  width: var(--container-table-width);
+  max-width: var(--container-table-max-width);
+  margin-inline: var(--container-table-margin) !important;
+  padding-inline-start: var(--table-drag-padding);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content .el-table,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer .el-table {
+  margin-inline: var(--container-table-margin) !important;
+  padding-inline-start: var(--table-drag-padding);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content .table-wrapper,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer .table-wrapper {
+  width: var(--table-wrapper-width);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>.bases-embed,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div:has(:is(.block-language-base, .bases-embed)),
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>.bases-embed,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div:has(:is(.block-language-base, .bases-embed)) {
+  width: var(--container-dataview-table-width);
+  max-width: var(--container-table-max-width);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content table,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer table {
+  width: var(--table-width);
+  max-width: var(--table-max-width);
+  margin-inline: var(--table-margin);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>.image-embed,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>.image-embed {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>.image-embed,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div:has(.image-embed),
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>.image-embed,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div:has(.image-embed) {
+  width: var(--container-img-width);
+  max-width: var(--container-img-max-width);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>.image-embed img,
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div:has(.image-embed) img,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>.image-embed img,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div:has(.image-embed) img {
+  max-width: var(--img-max-width);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>img,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>img {
+  max-width: var(--img-line-width);
+  margin-inline-start: var(--img-margin-start) !important;
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content div:has(.bases-view[data-view-type=map]),
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer div:has(.bases-view[data-view-type=map]) {
+  width: var(--container-map-width);
+  max-width: var(--container-map-max-width);
+  --bases-header-padding-end: var(--map-header-padding);
+  --bases-header-padding-start: var(--map-header-padding);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content div:has(.bases-view[data-view-type=map]) iframe,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer div:has(.bases-view[data-view-type=map]) iframe {
+  max-width: var(--map-max-width);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div:has(> :is(iframe, .cm-html-embed)),
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div:has(> :is(iframe, .cm-html-embed)) {
+  width: var(--container-iframe-width);
+  max-width: var(--container-iframe-max-width);
+}
+
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer.cm-contentContainer>.cm-content>div:has(> :is(iframe, .cm-html-embed)) iframe,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer>div:has(> :is(iframe, .cm-html-embed)) iframe {
+  max-width: var(--iframe-max-width);
+}
+
+/* Bases（.base ファイル）— Markdown とは別系統なので --file-margins は効かない。
+横幅は padding ではなく max-width + 中央寄せで決める（padding は固定値なので
+ペインが広いほど中身も広がり「狭くする」用途に使えない）。縦だけ padding。 */
+
+/* ツールバー（並び替え・フィルタ）と表を同じ箱に収めるため、内側の要素ではなく
+ビュー全体を 1 箇所で絞る。内側を個別に絞ると両者の幅がずれる。 */
+.workspace-leaf-content[data-type="bases"] .view-content {
+  max-width: var(--bases-content-width);
+  margin-inline: auto;
+  padding: 24px 24px 48px;
+  width: 100%;
+}
+
+/* 内側が自前の幅を持っていた場合は打ち消して親に合わせる */
+.workspace-leaf-content[data-type="bases"] .bases-view,
+.workspace-leaf-content[data-type="bases"] .bases-header,
+.workspace-leaf-content[data-type="bases"] .bases-toolbar {
+  max-width: 100%;
+  margin-inline: 0;
+}
+
+/* 本文中に埋め込んだ Bases は上下だけ空ける */
+.markdown-rendered .bases-embed {
+  padding-block: 8px;
+}

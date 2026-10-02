@@ -1,0 +1,695 @@
+/* 30-content.css — ノート本文 — 見出し / リスト / リンク / コード / 引用 / callout / 表 */
+
+/* セレクタと適用先の対応。.markdown-rendered は「読み取りビュー専用」ではない。
+ライブプレビューでも、埋め込み（![[...]]）・ホバープレビュー・テーブルウィジェット・
+callout の中身はこちらで描画される。片方だけに書くと、同じライブプレビューの画面内で
+素の本文とレンダリング済みブロックの見た目がずれる。
+
+  セレクタ族                                        LP 素の本文 / LP 内 rendered / 読み取り
+  .markdown-rendered … / .markdown-preview-view …        ✗    /      ✓        /    ✓
+  .markdown-source-view.mod-cm6 … / .HyperMD-* / .cm-*    ✓    /      ✗        /    ✗
+  body のトークン（--tag-* など）                          ✓    /      ✓        /    ✓
+
+したがって見た目は「まずトークンで決める」。トークンで表現できないものだけ、
+2 つのセレクタ族を並記した 1 ブロックにまとめて書くこと。 */
+
+/* Callouts */
+
+.is-live-preview.is-readable-line-width>.cm-callout .callout {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* チェックボックス — 四角く。モーダル内だけは 20-components.css で別値にしている */
+
+body {
+  --checkbox-radius: 3px;
+  --checkbox-top: 2px;
+  --checkbox-left: 0px;
+  --checklist-done-decoration: none;
+  --checklist-done-color: var(--text-normal);
+}
+
+/* 位置合わせは両ビュー共通。下の余白は --p-spacing に任せ、片側だけに padding を足さない */
+
+.markdown-rendered .task-list-item-checkbox,
+.markdown-source-view.mod-cm6 .task-list-item-checkbox {
+  position: relative;
+  top: var(--checkbox-top);
+  left: var(--checkbox-left);
+}
+
+.markdown-rendered ul>li.task-list-item {
+  text-indent: 0;
+}
+
+@media print {
+  .print {
+    --code-background: #eeeeee !important;
+  }
+}
+
+/* Transcluded notes and embeds — 枠・背景・タイトルを出さず親ノートと地続きに見せる */
+
+body {
+  --embed-max-height: none;
+  --embed-background: transparent;
+  --embed-border-start: 0;
+  --embed-border-left: 0;
+  --embed-padding: 0;
+}
+
+.markdown-embed-content {
+  --folding-offset: 0px;
+}
+
+.markdown-embed {
+  padding: 0;
+}
+
+.markdown-embed-title {
+  display: none;
+}
+
+.markdown-embed .markdown-preview-view .markdown-preview-sizer {
+  padding-bottom: 0 !important;
+}
+
+.markdown-preview-view.markdown-embed .markdown-preview-sizer,
+.markdown-preview-view.is-readable-line-width .markdown-embed .markdown-preview-sizer {
+  max-width: 100%;
+  width: 100%;
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.markdown-embed .markdown-preview-section div:last-child p,
+.markdown-embed .markdown-preview-section div:last-child ul {
+  margin-block-end: 2px;
+}
+
+.markdown-embed .markdown-preview-view {
+  padding: 0;
+}
+
+/* 元ノートへ飛ぶリンクは普段隠し、hover で出す */
+
+.markdown-embed-link,
+.file-embed-link {
+  top: 0;
+  right: 0;
+  text-align: right;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity var(--anim-duration-fast) var(--anim-motion-smooth);
+}
+
+.file-embed-link svg,
+.markdown-embed-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.markdown-embed:hover .markdown-embed-link,
+.markdown-embed:hover .file-embed-link,
+.file-embed:hover .file-embed-link {
+  opacity: 0.6;
+}
+
+.markdown-embed-link:hover,
+.file-embed-link:hover {
+  opacity: 1;
+  background-color: transparent;
+  --icon-color: var(--text-accent);
+}
+
+/* Links */
+
+a[href*="obsidian://search"] {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='17' height='17' class='search'><path fill='black' stroke='black' stroke-width='2' d='M42,6C23.2,6,8,21.2,8,40s15.2,34,34,34c7.4,0,14.3-2.4,19.9-6.4l26.3,26.3l5.6-5.6l-26-26.1c5.1-6,8.2-13.7,8.2-22.1 C76,21.2,60.8,6,42,6z M42,10c16.6,0,30,13.4,30,30S58.6,70,42,70S12,56.6,12,40S25.4,10,42,10z'></path></svg>");
+}
+
+.theme-dark a[href*="obsidian://search"] {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='17' height='17' class='search'><path fill='white' stroke='white' stroke-width='2' d='M42,6C23.2,6,8,21.2,8,40s15.2,34,34,34c7.4,0,14.3-2.4,19.9-6.4l26.3,26.3l5.6-5.6l-26-26.1c5.1-6,8.2-13.7,8.2-22.1 C76,21.2,60.8,6,42,6z M42,10c16.6,0,30,13.4,30,30S58.6,70,42,70S12,56.6,12,40S25.4,10,42,10z'></path></svg>");
+}
+
+/* Space between list items */
+
+.markdown-source-view ol>li,
+.markdown-source-view ul>li,
+.markdown-preview-view ol>li,
+.markdown-preview-view ul>li,
+.mod-cm6 .HyperMD-list-line.cm-line {
+  padding-top: var(--list-spacing);
+  padding-bottom: var(--list-spacing);
+}
+
+/* 箇条書きの点は両ビューとも .list-bullet（span + ::after の円）で描かれ、
+list-style-type はゼロ幅スペースなので ::marker は見えない。::marker に font-size を
+当てると行ボックスだけが伸びて読み取りビューの行間が広がるため、触らないこと。
+実際のサイズ指定はファイル末尾の .list-bullet::after にある */
+
+/* Backlinks in Preview */
+
+.is-mobile .workspace-leaf-content:not([data-type=search]) .workspace-leaf-content[data-type=markdown] .nav-buttons-container {
+  border-bottom: none;
+  padding-top: 5px;
+}
+
+.is-mobile .mod-root .workspace-leaf-content[data-type=markdown] .search-input-container {
+  width: calc(100% - 160px);
+}
+
+.embedded-backlinks .backlink-pane>.tree-item-self:hover,
+.embedded-backlinks .backlink-pane>.tree-item-self {
+  text-transform: none;
+  color: var(--text-normal);
+  font-size: var(--font-adaptive-normal);
+  font-weight: 500;
+  letter-spacing: unset;
+}
+
+body {
+  --pdf-dark-opacity: 1;
+}
+
+.theme-light {
+  --pdf-shadow: none;
+  --pdf-thumbnail-shadow: none;
+}
+
+.theme-light .pdf-viewer .page,
+.theme-light .pdfViewer .page,
+.theme-dark .pdf-viewer .page,
+.theme-dark .pdfViewer .page {
+  border: 0;
+}
+
+.theme-light .pdf-sidebar-container .thumbnailSelectionRing,
+.theme-dark .pdf-sidebar-container .thumbnailSelectionRing {
+  padding: 0;
+}
+
+.theme-light .pdf-sidebar-container .thumbnail::after,
+.theme-dark .pdf-sidebar-container .thumbnail::after {
+  right: var(--size-4-2);
+  bottom: var(--size-4-2);
+}
+
+.theme-dark {
+  --pdf-thumbnail-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.6);
+  --pdf-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.theme-dark .pdf-viewer .canvasWrapper,
+.theme-dark .pdfViewer .canvasWrapper {
+  opacity: var(--pdf-dark-opacity);
+}
+
+body {
+  --table-header-border-width: var(--table-border-width);
+  --table-column-first-border-width: var(--table-border-width);
+  --table-column-last-border-width: var(--table-border-width);
+  --table-row-last-border-width: var(--table-border-width);
+  --table-edge-cell-padding-first: 10px;
+  --table-edge-cell-padding-last: 10px;
+  --table-cell-padding: 4px 10px;
+  --table-header-size: var(--table-text-size);
+}
+
+/* 表の枠線とセル余白 */
+
+.markdown-source-view.mod-cm6 table,
+.markdown-preview-view table {
+  border: var(--table-border-width) solid var(--table-border-color);
+  border-collapse: collapse;
+}
+
+.markdown-source-view.mod-cm6 td,
+.markdown-source-view.mod-cm6 th,
+.markdown-preview-view td,
+.markdown-preview-view th {
+  padding: var(--table-cell-padding);
+  border: var(--table-border-width) solid var(--table-border-color);
+}
+
+.markdown-source-view.mod-cm6 td:first-child,
+.markdown-source-view.mod-cm6 th:first-child,
+.markdown-preview-view td:first-child,
+.markdown-preview-view th:first-child {
+  padding-inline-start: var(--table-edge-cell-padding-first);
+}
+
+.markdown-source-view.mod-cm6 td:first-child .table-cell-wrapper,
+.markdown-source-view.mod-cm6 th:first-child .table-cell-wrapper,
+.markdown-preview-view td:first-child .table-cell-wrapper,
+.markdown-preview-view th:first-child .table-cell-wrapper {
+  padding-inline-start: 0;
+}
+
+.markdown-source-view.mod-cm6 td:last-child,
+.markdown-source-view.mod-cm6 th:last-child,
+.markdown-preview-view td:last-child,
+.markdown-preview-view th:last-child {
+  padding-inline-end: var(--table-edge-cell-padding-last);
+}
+
+.markdown-source-view.mod-cm6 td:last-child .table-cell-wrapper,
+.markdown-source-view.mod-cm6 th:last-child .table-cell-wrapper,
+.markdown-preview-view td:last-child .table-cell-wrapper,
+.markdown-preview-view th:last-child .table-cell-wrapper {
+  padding-inline-end: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget table {
+  margin-top: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-cell-wrapper {
+  padding: var(--table-cell-padding);
+}
+
+/* セル内は本文の --p-spacing（空行 1 行分）だと広すぎるので詰める。
+読み取りビューだけに掛けると、ライブプレビューのテーブルウィジェットが広いままになる */
+
+.markdown-rendered table,
+.markdown-source-view.mod-cm6 .table-editor {
+  --p-spacing: 0.5rem;
+}
+
+.cm-embed-block.cm-table-widget.markdown-rendered {
+  padding: var(--table-drag-padding);
+  overscroll-behavior-x: none;
+}
+
+.is-mobile .cm-embed-block.cm-table-widget.markdown-rendered {
+  padding-bottom: 40px;
+}
+
+/* Live Preview Tables */
+
+.cm-s-obsidian .HyperMD-table-row span.cm-hmd-table-sep,
+.cm-hmd-table-sep-dummy {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+/* タグ。両ビューともここのトークンだけで決まる（読み取りビュー側の a.tag に塗りピルを
+別途書いていたが、ライブプレビューの .cm-hashtag と別物になるので廃止）。
+--background-modifier-border (--ui1 #3a3f42) は背景 #2f3437 に対してコントラスト 1.18:1 で
+ほぼ見えないため、枠線は 1 段濃い --ui2 を使う。表の罫線と同じ理由 */
+
+body {
+  --tag-size: 0.85em;
+  --tag-padding-x: 0.55em;
+  --tag-padding-y: 0.15em;
+  --tag-background: transparent;
+  --tag-background-hover: var(--background-modifier-hover);
+  --tag-color: var(--text-normal);
+  --tag-border-width: 1px;
+  --tag-border-color: var(--background-modifier-border-hover);
+  --tag-border-color-hover: var(--text-faint);
+  --tag-color-hover: var(--text-normal);
+}
+
+/* ライブプレビューのタグは #  と本文が別 span に割れる。素直に角丸を当てると
+継ぎ目に縦線が出るので、外側だけ丸めて内側の枠線を消す */
+
+.cm-s-obsidian .cm-hashtag {
+  border-top: var(--tag-border-width) solid var(--tag-border-color);
+  border-bottom: var(--tag-border-width) solid var(--tag-border-color);
+  padding-block: var(--tag-padding-y);
+}
+
+.cm-s-obsidian .cm-hashtag-begin {
+  border-left: var(--tag-border-width) solid var(--tag-border-color);
+  border-right: none;
+  border-radius: var(--tag-radius) 0 0 var(--tag-radius);
+  padding-inline-start: var(--tag-padding-x);
+}
+
+.cm-s-obsidian .cm-hashtag-end {
+  border-right: var(--tag-border-width) solid var(--tag-border-color);
+  border-left: none;
+  border-radius: 0 var(--tag-radius) var(--tag-radius) 0;
+  padding-inline-end: var(--tag-padding-x);
+}
+
+/* Headings and fonts */
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.02em;
+}
+
+body,
+input,
+button {
+  font-family: var(--font-interface);
+}
+
+.cm-s-obsidian span.cm-error {
+  color: var(--color-red);
+}
+
+.markdown-preview-view,
+.popover,
+.workspace-leaf-content[data-type=markdown] {
+  font-family: var(--font-text);
+}
+
+body,
+.markdown-preview-view,
+.view-content>.markdown-source-view.mod-cm6.is-live-preview>.cm-scroller,
+.view-content>.cm-s-obsidian {
+  font-size: var(--font-adaptive-normal);
+  font-weight: var(--normal-weight);
+}
+
+.view-content>.markdown-source-view.mod-cm6 .cm-scroller,
+.view-content>.markdown-source-view,
+.view-content>.cm-s-obsidian {
+  font-family: var(--font-text);
+}
+
+/* 番号リストの "1." は読み取りビューでは ::marker で本文色になる。
+ライブプレビューでも記号扱いにせず --list-marker-color に揃える */
+
+.cm-formatting:not(.cm-formatting-code-block):not(.cm-formatting-hashtag):not(.cm-formatting-list) {
+  color: var(--text-formatting);
+}
+
+.cm-formatting-list-ol {
+  color: var(--list-marker-color);
+}
+
+/* タイトルと見出し — Notion は見出しの「上」を大きく空け、「下」は詰める */
+
+/* Notion のページタイトル相当。上の余白はここで持つ */
+
+.inline-title {
+  padding-top: 16px;
+  font-size: 2.5em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* 見出しの字面。margin-top はここでは「見出しの直後に見出しが来る」場合の値。
+ライブプレビューではコアの .cm-content > * { margin-top: 0 !important } により margin が
+一切効かないので、LP 側の上余白は下の HyperMD-header の padding-top が担当する。
+段落・リスト・表・コードの直後の見出しはコアが --heading-spacing を使う（00-tokens.css で上書き済み） */
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6,
+.HyperMD-header {
+  margin-top: var(--blank-line);
+  margin-bottom: 0.3em;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* ライブプレビューの見出し上余白。コアは var(--p-spacing) を使うが、--p-spacing は
+読み取りビューの段落間隔に合わせて決めた値なので、見出しは専用の --heading-gap で持つ。
+「見出し → 空行 → 見出し」のときはコアがより高い詳細度で 0 に落とすので、そちらが勝つ */
+
+.cm-s-obsidian .cm-line.HyperMD-header {
+  padding-top: var(--heading-gap);
+}
+
+/* 先頭の見出しを詰める指定は置かない。ライブプレビューではプロパティの下に空行が 1 行
+あり通常どおりの余白になるため。読み取りビュー側の帳尻合わせは 10-app.css にある */
+
+/* リスト — 項目の間隔は上の --list-spacing（両ビュー共通）だけで決める。
+読み取りビューにだけ li+li の margin を足すと、そちらが 0.1em 広くなる。
+
+インデントはコアだと食い違う。ライブプレビューは行頭記号の実幅（"- " なら 21px、
+"1. " や "- [ ] " なら 31px）でぶら下げるのに対し、読み取りビューは種類を問わず 3ch。
+読み取り側を記号の幅に合わせる。ネストぶんは両ビューとも --list-indent なので、
+第 1 階層さえ合えば下の階層も揃う */
+
+.markdown-rendered ul>li {
+  margin-inline-start: 2ch;
+}
+
+.markdown-rendered ol>li,
+.markdown-rendered ul>li.task-list-item {
+  margin-inline-start: 3ch;
+}
+
+/* リンク — Notion はリンク色を使わず「本文色＋下線」。外部リンクだけアクセント色にして
+内部リンクと区別する。ライブプレビューでは <a> ではなく .cm-hmd-internal-link /
+.cm-link の span になるため、両方を並べる */
+
+.markdown-rendered a.internal-link,
+.markdown-source-view.mod-cm6 a.internal-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link .cm-underline {
+  color: var(--text-normal);
+  text-decoration: underline;
+  text-decoration-color: var(--text-faint);
+  text-underline-offset: 2px;
+}
+
+.markdown-rendered a.internal-link:hover,
+.markdown-source-view.mod-cm6 a.internal-link:hover,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link:hover,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link .cm-underline:hover {
+  text-decoration-color: var(--text-muted);
+  background-color: var(--background-modifier-hover);
+  border-radius: var(--radius-s);
+}
+
+.markdown-rendered a.external-link,
+.markdown-source-view.mod-cm6 a.external-link,
+.markdown-source-view.mod-cm6 .cm-link,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline,
+.markdown-source-view.mod-cm6 .cm-url {
+  color: var(--text-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--text-accent) 40%, transparent);
+  text-underline-offset: 2px;
+}
+
+/* コード — インラインコードは Notion の朱色が最も識別しやすい */
+
+.markdown-rendered :not(pre)>code,
+.cm-s-obsidian span.cm-inline-code {
+  background-color: var(--notion-inline-code-bg);
+  color: var(--notion-inline-code-color);
+  font-size: var(--code-size);
+  padding: 0.15em 0.35em;
+  border-radius: var(--code-radius);
+}
+
+/* コードブロック（shiki-highlighter と併用） */
+
+.markdown-rendered pre,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-bg {
+  border-radius: var(--radius-l);
+}
+
+.markdown-rendered pre {
+  padding: var(--code-block-padding);
+  line-height: var(--code-block-line-height);
+}
+
+/* ライブプレビューでコードブロックが生の行のまま描かれる場合（shiki がウィジェットを
+出さない言語・編集中の行）。行の集合なので padding は上下端の行に割り振る */
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  line-height: var(--code-block-line-height);
+  padding-inline: var(--code-block-padding-x);
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-begin {
+  padding-top: var(--code-block-padding-y);
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-end {
+  padding-bottom: var(--code-block-padding-y);
+}
+
+/* 折り返したいなら: .markdown-rendered pre > code { white-space: pre-wrap; } */
+
+/* 引用 — Notion は背景を敷かず、太い左バーのみ。色は --blockquote-* に集約してあり、
+ライブプレビューの .HyperMD-quote もそのトークンを見るので両ビューで揃う */
+
+.markdown-rendered blockquote {
+  background-color: transparent;
+  border-left: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  padding: 0 0 0 var(--blockquote-padding-left);
+  margin-inline: 0;
+  color: var(--blockquote-color);
+  font-style: normal;
+}
+
+/* ライブプレビューの引用行。左インデントを読み取りビューと同じ値にする */
+
+.markdown-source-view.mod-cm6 .HyperMD-quote {
+  padding-left: var(--blockquote-padding-left);
+}
+
+/* 生 HTML の <mark>。ライブプレビューでは .cm-html-embed の中に素の <mark> が入り、
+テーマの mark 指定が当たらずブラウザ既定（黒文字・純黄）になる。読み取りビューと同じ
+テーマ色に揃える。==記法== 側（.cm-highlight / mark）は元から一致している */
+
+.markdown-rendered mark,
+.cm-html-embed mark {
+  background-color: var(--text-highlight-bg);
+  color: var(--text-normal);
+}
+
+/* callout — 種類ごとの色は活かしつつ、枠線を外してフラットに */
+
+.callout {
+  --callout-blend-mode: normal;
+  box-shadow: none;
+}
+
+.callout-title {
+  padding: 0;
+  font-weight: 600;
+}
+
+.callout-content> :first-child {
+  margin-top: 0.25em;
+}
+
+/* 表 — 長文セルで列幅が暴れるのを止め、1 行目に背景色を敷く */
+
+/* 幅は 40-layout.css の --table-width が決めるのでここでは触らない
+（.table-editor は div なので table-layout も効かない。実効は下の .markdown-rendered table 側） */
+
+.markdown-rendered table {
+  table-layout: fixed;
+}
+
+.markdown-rendered th,
+.markdown-rendered td,
+.markdown-source-view.mod-cm6 .table-editor th,
+.markdown-source-view.mod-cm6 .table-editor td {
+  overflow-wrap: anywhere;
+  white-space: normal;
+  vertical-align: top;
+}
+
+.markdown-rendered thead th,
+.markdown-source-view.mod-cm6 .table-editor thead th {
+  background-color: var(--background-secondary);
+  font-weight: var(--table-header-weight);
+  color: var(--text-muted);
+}
+
+/* 行 hover（Notion のテーブルは行が反応する） */
+
+.markdown-rendered tbody tr:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+/* 区切り線 — 上下の余白は他のブロックと同じ「空行 1 行ぶん」にする。
+ライブプレビューでは <hr> が .cm-line の中に入るため、hr に margin を付けると
+実際の空行の外にさらに余白が乗って読み取りビューより 2 行ぶん広くなる。
+LP 側は余白 0 にして、前後の空行だけに任せる */
+
+.markdown-rendered hr,
+.markdown-source-view.mod-cm6 .cm-line hr,
+.markdown-source-view.mod-cm6 hr.cm-hr {
+  border: none;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+/* ライブプレビューでは hr が 1 行ぶん（--blank-line）の高さを占め、その上下に空行が
+1 行ずつ入るので、区切り線は合計 3 行ぶんの領域になる。読み取りビューの hr は線そのもの
+（約 1px）しか高さを持たないため、差分を上下の margin に振り分けて同じ 3 行ぶんに合わせる */
+
+.markdown-rendered hr {
+  margin: calc((3 * var(--blank-line) - 1px) / 2) 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-line hr,
+.markdown-source-view.mod-cm6 hr.cm-hr {
+  margin: 0;
+}
+
+/* タグ — 見た目は上の --tag-* トークンが決める。ここは読み取りビューの <a> にだけ必要な
+下線消しと、トークンで指定できない角丸だけ */
+
+.markdown-rendered a.tag {
+  border-radius: var(--tag-radius);
+  text-decoration: none;
+}
+
+/* プロパティ（frontmatter） — Notion のページプロパティのように、低いコントラストで詰める */
+
+.metadata-property-key {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.metadata-container {
+  border: none;
+  padding-top: 0;
+  --input-height: calc(var(--font-adaptive-small) * 2.2);
+}
+
+/* 見出しの `#` を左余白へ逃がす — ライブプレビューでは編集中の行にだけ `#` が現れるため、見出しをクリックした 瞬間に本文が右へずれる。絶対配置で行の左外側に出して、テキストを動かさない */
+
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  position: relative;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header .cm-formatting-header {
+  position: absolute;
+  left: 0;
+  transform: translateX(-100%);
+  padding-right: 0.35em;
+  opacity: 0.35;
+  font-weight: 400;
+  /* 見出しサイズだと左に出っ張りすぎるので本文サイズに戻す */
+  font-size: var(--font-text-size);
+  line-height: inherit;
+}
+
+/* 本文中の hover の動き — 表の行・タグ・リンクなど、本文で触れる要素の色変化をなじませる */
+
+.markdown-rendered tbody tr,
+.markdown-rendered a.tag,
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link,
+.cm-s-obsidian .cm-hashtag,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link,
+.markdown-source-view.mod-cm6 .cm-link,
+.markdown-source-view.mod-cm6 .cm-url {
+  transition: background-color var(--anim-duration-fast) var(--anim-motion-smooth), color var(--anim-duration-fast) var(--anim-motion-smooth), text-decoration-color var(--anim-duration-fast) var(--anim-motion-smooth);
+}
+
+/* テキストカーソル — 細くて見失いやすいので太く、点滅はゆっくりに */
+
+.markdown-source-view.mod-cm6 .cm-cursor,
+.markdown-source-view.mod-cm6 .cm-cursor-primary {
+  border-left-width: 2.5px;
+  border-left-color: var(--caret-color);
+}
+
+/* CodeMirror が animation-duration をインラインで持つので !important が要る */
+
+.markdown-source-view.mod-cm6 .cm-cursorLayer {
+  animation-duration: 2.4s !important;
+}
+
+/* ul の点。Obsidian の既定 0.3em は全角の本文に対して痩せて見えるので大きくする。
+left で中心位置を保ち、本文との間隔は変えない */
+
+.markdown-rendered .list-bullet::after,
+.markdown-source-view.mod-cm6 .list-bullet::after {
+  width: var(--list-bullet-size);
+  height: var(--list-bullet-size);
+  left: calc(var(--list-bullet-size) / -2);
+}

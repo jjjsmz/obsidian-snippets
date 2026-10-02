@@ -1,0 +1,142 @@
+/* 20-components.css — 共通コンポーネント — モーダル / プログレスバー / ツールチップ */
+
+.document-search-container {
+  margin: 0 auto;
+  max-width: var(--max-width);
+  width: var(--line-width);
+}
+
+/* Modals */
+
+/* モーダル内のチェックボックスだけ角を丸く。本文側は 30-content.css */
+
+.modal-button-container .mod-checkbox {
+  --checkbox-radius: 4px;
+}
+
+.is-phone .modal.mod-settings .vertical-tab-header-group-items,
+.is-phone .modal.mod-settings .setting-search-result-group {
+  border: var(--setting-items-border-width) solid var(--background-modifier-border);
+}
+
+/* Confirm delete */
+
+.modal-container.mod-confirmation .modal {
+  width: 480px;
+  min-width: 0;
+}
+
+.popover {
+  --file-margins: var(--size-4-6) var(--size-4-6) var(--size-4-6);
+}
+
+/* Progress bars */
+
+body {
+  --progress-outline: var(--background-modifier-border);
+  --progress-complete: var(--text-accent);
+}
+
+.markdown-rendered progress,
+.markdown-source-view.is-live-preview progress,
+.markdown-preview-view progress {
+  width: 220px;
+}
+
+.markdown-rendered progress[value]::-webkit-progress-bar,
+.markdown-source-view.is-live-preview progress[value]::-webkit-progress-bar,
+.markdown-preview-view progress[value]::-webkit-progress-bar {
+  box-shadow: inset 0px 0px 0px var(--border-width) var(--progress-outline);
+}
+
+.markdown-rendered progress[value^="1"]::-webkit-progress-value,
+.markdown-rendered progress[value^="2"]::-webkit-progress-value,
+.markdown-rendered progress[value^="3"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="1"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="2"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="3"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="1"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="2"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="3"]::-webkit-progress-value {
+  background-color: var(--color-red);
+}
+
+.markdown-rendered progress[value^="4"]::-webkit-progress-value,
+.markdown-rendered progress[value^="5"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="4"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="5"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="4"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="5"]::-webkit-progress-value {
+  background-color: var(--color-orange);
+}
+
+.markdown-rendered progress[value^="6"]::-webkit-progress-value,
+.markdown-rendered progress[value^="7"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="6"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="7"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="6"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="7"]::-webkit-progress-value {
+  background-color: var(--color-yellow);
+}
+
+.markdown-rendered progress[value^="8"]::-webkit-progress-value,
+.markdown-rendered progress[value^="9"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="8"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value^="9"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="8"]::-webkit-progress-value,
+.markdown-preview-view progress[value^="9"]::-webkit-progress-value {
+  background-color: var(--color-green);
+}
+
+.markdown-rendered progress[value="1"]::-webkit-progress-value,
+.markdown-rendered progress[value="100"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="1"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="100"]::-webkit-progress-value,
+.markdown-preview-view progress[value="1"]::-webkit-progress-value,
+.markdown-preview-view progress[value="100"]::-webkit-progress-value {
+  background-color: var(--progress-complete);
+}
+
+.markdown-rendered progress[value="0"]::-webkit-progress-value,
+.markdown-rendered progress[value="2"]::-webkit-progress-value,
+.markdown-rendered progress[value="3"]::-webkit-progress-value,
+.markdown-rendered progress[value="4"]::-webkit-progress-value,
+.markdown-rendered progress[value="5"]::-webkit-progress-value,
+.markdown-rendered progress[value="6"]::-webkit-progress-value,
+.markdown-rendered progress[value="7"]::-webkit-progress-value,
+.markdown-rendered progress[value="8"]::-webkit-progress-value,
+.markdown-rendered progress[value="9"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="0"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="2"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="3"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="4"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="5"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="6"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="7"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="8"]::-webkit-progress-value,
+.markdown-source-view.is-live-preview progress[value="9"]::-webkit-progress-value,
+.markdown-preview-view progress[value="0"]::-webkit-progress-value,
+.markdown-preview-view progress[value="2"]::-webkit-progress-value,
+.markdown-preview-view progress[value="3"]::-webkit-progress-value,
+.markdown-preview-view progress[value="4"]::-webkit-progress-value,
+.markdown-preview-view progress[value="5"]::-webkit-progress-value,
+.markdown-preview-view progress[value="6"]::-webkit-progress-value,
+.markdown-preview-view progress[value="7"]::-webkit-progress-value,
+.markdown-preview-view progress[value="8"]::-webkit-progress-value,
+.markdown-preview-view progress[value="9"]::-webkit-progress-value {
+  background-color: var(--color-red);
+}
+
+/* Tooltips */
+
+.tooltip {
+  transition: none;
+  animation: none;
+}
+
+.tooltip.mod-left,
+.tooltip.mod-right {
+  animation: none;
+}
+
+/* 本文（引用・見出しなど）の見た目は 30-content.css に集約している */

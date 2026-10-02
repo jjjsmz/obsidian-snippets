@@ -1,0 +1,283 @@
+/* 60-interface.css — インターフェース — サイドバー / タブ / 検索 / 設定 / スクロールバー */
+
+body .mod-right-split {
+  --background-secondary: var(--background-primary);
+}
+
+body .mod-right-split :not(.mod-top) .workspace-tab-header-container {
+  --tab-container-background: var(--background-primary);
+}
+
+/* Main tabs */
+.workspace-tabs:not(.mod-stacked) {
+  --tab-text-color: var(--tx2);
+  --tab-text-color-focused: var(--tx2);
+  --tab-text-color-active: var(--tx1);
+  --tab-text-color-focused-active: var(--tx1);
+  --tab-text-color-focused-active-current: var(--tx1);
+}
+
+/* Remove underline on lower sidebar tabs */
+body .workspace>.workspace-split:not(.mod-root) .workspace-tabs:not(.mod-top) .workspace-tab-header-container {
+  --tab-outline-width: 0;
+}
+
+body {
+  --nav-item-white-space: nowrap;
+}
+
+body .tree-item-self {
+  white-space: nowrap;
+}
+
+body .tree-item-inner {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Tablet */
+.is-tablet .workspace-drawer {
+  padding-top: 0px;
+}
+
+.is-tablet .workspace-drawer:not(.is-pinned) {
+  margin: 30px 16px 0;
+  height: calc(100vh - 48px);
+  border-radius: 15px;
+  border: none;
+}
+
+.is-tablet .workspace-drawer-ribbon {
+  background-color: var(--background-primary);
+  border-right: 1px solid var(--background-modifier-border);
+}
+
+.is-tablet .workspace-drawer-header,
+.is-tablet .workspace-drawer.is-pinned .workspace-drawer-header {
+  padding-top: var(--size-4-4);
+}
+
+.is-tablet .workspace-drawer-header-icon {
+  margin-inline-start: 0;
+}
+
+.is-mobile {
+  --font-bold: 600;
+  --font-ui-medium: var(--font-adaptive-small);
+  --interactive-normal: var(--background-secondary);
+  --background-modifier-form-field: var(--background-secondary);
+}
+
+.is-mobile .markdown-source-view.mod-cm6 .cm-gutters {
+  margin-left: 0;
+}
+
+.is-mobile.theme-light .menu {
+  --interactive-normal: var(--background-modifier-hover);
+}
+
+.is-mobile .workspace-drawer.mod-left.is-pinned {
+  width: var(--mobile-left-sidebar-width);
+  min-width: 150pt;
+}
+
+.is-mobile .workspace-drawer.mod-right.is-pinned {
+  width: var(--mobile-right-sidebar-width);
+  min-width: 150pt;
+}
+
+.is-phone {
+  --bases-embed-width: 100%;
+  --bases-embed-transform: none;
+}
+
+/* Backlink pane */
+.outgoing-link-pane>.tree-item-self:hover,
+.outgoing-link-pane>.tree-item-self,
+.backlink-pane>.tree-item-self:hover,
+.backlink-pane>.tree-item-self {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--font-adaptive-smallest);
+  font-weight: 500;
+}
+
+/* サイドバー — Notion のナビは低背・小さめ・角丸 3px・hover は淡いグレー */
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split {
+  border: none;
+  box-shadow: none;
+}
+
+/* 行の当たり判定を Notion 並み（27px 前後）に */
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-self,
+.workspace-leaf-content[data-type="search"] .tree-item-self,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self {
+  border-radius: var(--radius-s);
+  line-height: 1.4;
+}
+
+/* 選択中・アクティブはアクセントの薄い面＋アクセント文字で示す。
+サイドバー / タブ / 検索候補 / 設定タブ をすべて同じ塗りで揃える。 */
+.nav-file-title.is-active,
+.tree-item-self.is-active,
+.tree-item-self.is-selected,
+.suggestion-item.is-selected,
+.vertical-tab-nav-item.is-active,
+.horizontal-tab-nav-item.is-active {
+  background-color: var(--accent-tint);
+  color: var(--text-accent);
+  font-weight: var(--nav-item-weight-active);
+}
+
+.nav-file-title.is-active .nav-file-title-content,
+.tree-item-self.is-active .tree-item-inner,
+.suggestion-item.is-selected .suggestion-title {
+  color: var(--text-accent);
+}
+
+/* フォルダ名は少し弱く、ファイル名との差をつける */
+.nav-folder-title-content {
+  color: var(--text-muted);
+}
+
+.nav-folder-title:hover .nav-folder-title-content {
+  color: var(--text-normal);
+}
+
+/* インデントガイドを控えめに */
+.nav-files-container .tree-item-children {
+  border-left-color: var(--background-modifier-border);
+}
+
+/* セクション見出し（アウトライン等のペインタイトル） */
+.nav-header,
+.tree-item-self.mod-collapsible .tree-item-inner {
+  font-size: var(--font-ui-small);
+}
+
+/* タブ — Notion にタブは無いので、限界までフラットにする。 アクティブタブ＝本文と同じ背景色で「地続き」に見せる */
+.workspace-tab-header-container {
+  border-bottom: none;
+  box-shadow: none;
+}
+
+.workspace-tab-header {
+  border: none;
+}
+
+.workspace-tab-header.is-active {
+  background-color: var(--background-primary);
+}
+
+.workspace-tab-header-inner {
+  border-radius: var(--radius-m);
+}
+
+.workspace-tab-header:not(.is-active) .workspace-tab-header-inner-title {
+  color: var(--text-muted);
+}
+
+/* ビューヘッダ（ノート上部のタイトル行）を静かに */
+.view-header {
+  border-bottom: none;
+  background-color: transparent;
+}
+
+.view-header-title {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+/* 検索・コマンドパレット・クイックスイッチャー — Notion の検索モーダル: 角丸大きめ・影で浮かせる・枠線なし */
+.prompt,
+.modal {
+  border: none;
+  border-radius: var(--modal-radius);
+  box-shadow: var(--shadow-l);
+}
+
+.prompt-input {
+  font-size: 15px;
+}
+
+.suggestion-item {
+  border-radius: var(--radius-m);
+  padding: 6px 10px;
+}
+
+/* 検索結果の一致部分をはっきり見せる（認識しやすさ） */
+.suggestion-highlight,
+.search-result-file-matched-text {
+  color: var(--text-accent);
+  background-color: var(--accent-tint-strong);
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* 設定画面 */
+.modal.mod-settings .vertical-tab-header {
+  background-color: var(--background-secondary);
+  border-right: none;
+}
+
+.modal.mod-settings .vertical-tab-nav-item {
+  border-radius: var(--radius-s);
+}
+
+.setting-item {
+  border-top-color: var(--background-modifier-border);
+}
+
+/* スクロールバー — Notion は普段ほぼ見えず、hover で薄く出る */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* 出るのは速く、消えるのはゆっくり。そのほうが目障りにならない */
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border: 2.5px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+  transition: background-color var(--anim-duration-slow) var(--anim-motion-smooth);
+}
+
+*:hover> ::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--background-modifier-border-hover);
+  transition: background-color var(--anim-duration-superfast) var(--anim-motion-smooth);
+}
+
+.workspace-leaf-content:hover ::-webkit-scrollbar-thumb,
+.markdown-preview-view:hover::-webkit-scrollbar-thumb,
+.cm-scroller:hover::-webkit-scrollbar-thumb {
+  background-color: var(--background-modifier-border);
+  transition: background-color var(--anim-duration-superfast) var(--anim-motion-smooth);
+}
+
+/* 全体のフォーカス表現 — キーボード操作時に「今どこにいるか」を分かりやすく */
+.workspace-leaf.mod-active .view-header-title {
+  color: var(--text-normal);
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.prompt-input:focus {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 35%, transparent);
+}
+
+/* hover の動き — 一番触る場所（サイドバー・タブ・検索候補・アイコン）にだけ transition を足す。 補間するのは色と不透明度だけ。`all` は幅や高さまで補間してカクつくので使わない */
+.tree-item-self,
+.nav-file-title,
+.nav-folder-title,
+.workspace-tab-header,
+.workspace-tab-header-inner,
+.suggestion-item,
+.clickable-icon,
+.vertical-tab-nav-item {
+  transition: background-color var(--anim-duration-fast) var(--anim-motion-smooth), color var(--anim-duration-fast) var(--anim-motion-smooth);
+}

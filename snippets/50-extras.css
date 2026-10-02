@@ -1,0 +1,210 @@
+/* 50-extras.css — 付加機能 — ヘルパークラス / 画像の扱い */
+
+/* 編集モードのタスク記法を等幅に */
+.cm-formatting.cm-formatting-task.cm-property {
+  font-family: var(--font-monospace);
+}
+
+.is-focused .mod-root .workspace-tab-header .workspace-tab-header-inner-icon,
+.mod-root .workspace-tab-header .workspace-tab-header-inner-icon {
+  --icon-color: var(--tx1);
+  --icon-color-hover: var(--tx1);
+  --icon-color-active: var(--tx1);
+  --icon-color-focused: var(--tx1);
+}
+
+.is-focused .sidebar-toggle-button,
+.is-focused .workspace-tab-header:not(.is-active),
+.is-focused .workspace-tab-header-new-tab,
+.is-focused .workspace-tab-header-tab-list,
+.is-focused .mod-left-split .mod-top .workspace-tab-header,
+.is-focused .mod-right-split .mod-top .workspace-tab-header,
+.sidebar-toggle-button,
+.workspace-tab-header:not(.is-active),
+.workspace-tab-header-new-tab,
+.workspace-tab-header-tab-list,
+.mod-left-split .mod-top .workspace-tab-header,
+.mod-right-split .mod-top .workspace-tab-header {
+  --icon-color: var(--text-muted);
+  --icon-color-hover: var(--text-normal);
+  --icon-color-active: var(--text-normal);
+  --icon-color-focused: var(--text-normal);
+  --icon-color-focus: var(--text-normal);
+}
+
+.is-focused .mod-right-split .mod-top .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.is-focused .mod-left-split .mod-top .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.mod-right-split .mod-top .workspace-tab-header.is-active .workspace-tab-header-inner-icon,
+.mod-left-split .mod-top .workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+  color: var(--text-muted);
+}
+
+.workspace-leaf-resize-handle {
+  transition: none;
+}
+
+.is-hidden-frameless .workspace-split.mod-vertical>*>.workspace-leaf-resize-handle,
+.is-hidden-frameless .workspace-split.mod-left-split>.workspace-leaf-resize-handle,
+.is-hidden-frameless .workspace-split.mod-right-split>.workspace-leaf-resize-handle {
+  -webkit-app-region: no-drag;
+  border: 0;
+  z-index: 15;
+}
+
+.is-hidden-frameless .workspace-split.mod-vertical>*>.workspace-leaf-resize-handle:after,
+.is-hidden-frameless .workspace-split.mod-left-split>.workspace-leaf-resize-handle:after,
+.is-hidden-frameless .workspace-split.mod-right-split>.workspace-leaf-resize-handle:after {
+  content: "";
+  height: 100%;
+  width: 1px;
+  background: var(--divider-color);
+  top: 0;
+  position: absolute;
+}
+
+.is-hidden-frameless .workspace-split.mod-vertical>*>.workspace-leaf-resize-handle:hover:after,
+.is-hidden-frameless .workspace-split.mod-left-split>.workspace-leaf-resize-handle:hover:after,
+.is-hidden-frameless .workspace-split.mod-right-split>.workspace-leaf-resize-handle:hover:after {
+  background: var(--divider-color-hover);
+}
+
+.is-hidden-frameless .workspace-split.mod-right-split>.workspace-leaf-resize-handle:after {
+  left: 0;
+}
+
+.is-hidden-frameless .workspace-split.mod-vertical>*>.workspace-leaf-resize-handle:after,
+.is-hidden-frameless .workspace-split.mod-left-split>.workspace-leaf-resize-handle:after {
+  right: 0;
+}
+
+/* リボンとペインヘッダ */
+
+.workspace-ribbon.mod-left {
+  border-left: 0;
+  transition: none;
+}
+
+/* Collapse pane header */
+body.show-view-header .app-container .workspace-split.mod-root>.workspace-leaf .view-header {
+  transition: height var(--anim-duration-superfast) var(--anim-motion-smooth);
+}
+
+.markdown-source-view .image-embed img:not(.link-favicon):not(.emoji):not([width]),
+.markdown-source-view img:not(.link-favicon):not(.emoji):not([width]),
+.markdown-source-view .external-embed,
+.markdown-source-view audio,
+.markdown-source-view video,
+.markdown-preview-view .image-embed img:not(.link-favicon):not(.emoji):not([width]),
+.markdown-preview-view img:not(.link-favicon):not(.emoji):not([width]),
+.markdown-preview-view .external-embed,
+.markdown-preview-view audio,
+.markdown-preview-view video {
+  width: 100%;
+}
+
+.image-embed:not([width]) .image-wrapper {
+  width: 100%;
+}
+
+.markdown-source-view video,
+.markdown-source-view img:not(.emoji),
+.markdown-rendered video,
+.markdown-rendered img:not(.emoji) {
+  border-radius: var(--image-radius);
+}
+
+body:not(.is-mobile) div.image-embed:focus-within .image-wrapper::after {
+  border-radius: var(--image-radius);
+}
+
+/* Dark mode images  */
+
+/* MIT License | Copyright (c) Steph Ango (@kepano) */
+
+:root {
+  --image-mix: normal;
+}
+
+.theme-dark .markdown-source-view img,
+.theme-dark .markdown-preview-view img {
+  opacity: var(--image-muted);
+  transition: opacity 0.25s linear;
+}
+
+@media print {
+  body {
+    --image-muted: 1;
+  }
+}
+
+.theme-dark .markdown-source-view img:hover,
+.theme-dark .markdown-preview-view img:hover {
+  opacity: 1;
+  transition: opacity 0.25s linear;
+}
+
+.theme-light img {
+  mix-blend-mode: var(--image-mix);
+}
+
+/* Invert  */
+
+div[src$="#blend"],
+div[src$="#invert"] {
+  background-color: var(--background-primary);
+}
+
+.theme-dark img[src$="#invert"],
+.theme-dark div[src$="#invert"] img,
+.theme-dark span[src$="#invert"] img {
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: screen;
+}
+
+.theme-dark img[src$="#blend"],
+.theme-dark div[src$="#blend"] img,
+.theme-dark span[src$="#blend"] img {
+  mix-blend-mode: screen;
+}
+
+.theme-light img[src$="#blend"],
+.theme-light div[src$="#blend"] img,
+.theme-light span[src$="#blend"] img {
+  mix-blend-mode: multiply;
+}
+
+.theme-light img[src$="#invertW"],
+.theme-light div[src$="#invertW"] img,
+.theme-light span[src$=invertW] img {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Circle */
+
+img[src$="#circle"]:not(.emoji),
+span[src$="#circle"] img:not(.emoji),
+span[src$="#round"] img:not(.emoji) {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+}
+
+/* Outline */
+
+img[src$="#outline"],
+div[src$="#outline"] img,
+span[src$="#outline"] img {
+  border: 1px solid var(--ui1);
+}
+
+/* Interface */
+
+img[src$="#interface"],
+span[src$="#interface"] img {
+  border: 1px solid var(--ui1);
+  box-shadow: var(--shadow-l);
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-radius: var(--radius-m);
+}
+
+/* 画像グリッド（cssclasses: img-grid）。:has() を使うので Obsidian 1.1.9 以上 */

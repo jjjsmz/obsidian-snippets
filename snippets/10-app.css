@@ -1,0 +1,264 @@
+/* 10-app.css — アプリ外枠 — ステータスバー / タイトルバー / ウィンドウフレーム */
+
+.query-toolbar-menu .combobox-button {
+  background-color: transparent;
+}
+
+.block-language-base .bases-header .bases-toolbar,
+.bases-embed .bases-header .bases-toolbar {
+  padding-bottom: 2px;
+  transition: 0.15s 0.15s opacity;
+}
+
+.block-language-base .bases-header .bases-toolbar:hover,
+.bases-embed .bases-header .bases-toolbar:hover {
+  opacity: 1;
+  transition: 0s opacity;
+}
+
+.bases-table-header-icon {
+  display: var(--bases-table-header-icon-display);
+}
+
+/* .cm-editor .cm-content の padding-top はコアの
+.markdown-source-view.mod-cm6 .cm-content に負けて元から効いていないので置かない */
+
+.markdown-source-view {
+  color: var(--text-normal);
+}
+
+.markdown-source-view.mod-cm6 .cm-sizer {
+  display: block;
+}
+
+.markdown-source-view.mod-cm6 .cm-scroller {
+  padding-inline-end: 0;
+  padding-inline-start: 0;
+}
+
+/* 本文先頭の余白。ライブプレビューは .cm-content の padding-top（--body-top-gap）に
+加えて、プロパティの下にあるソースの空行 1 行ぶんが必ず入る。読み取りビューはコアが
+  .markdown-preview-pusher + div:not(.mod-ui) > :first-child { margin-top: 0 }
+で先頭ブロックの余白を殺してしまうので、同じ詳細度で打ち消して同じ高さを与える。
+（旧実装は .mod-header を使っていたが、そのクラスは現在の読み取りビューに存在しない） */
+
+/* プロパティ / インラインタイトルがある場合は .mod-ui + div、無い場合は pusher + div が
+先頭ブロックになる。コアと同じ 2 通りを並べる。
+値に --meta-gap を足しているのは、読み取りビューではプロパティ欄の margin-bottom が
+先頭ブロックの margin-top と相殺されて「大きい方」しか残らないため。ライブプレビューは
+プロパティ欄の margin と空行が単純に足し算されるので、その合計に揃える */
+
+.markdown-rendered>.markdown-preview-section>.markdown-preview-pusher+div:not(.mod-ui)> :first-child,
+.markdown-rendered>.markdown-preview-section>.mod-ui+div:not(.mod-ui)> :first-child {
+  margin-top: calc(var(--meta-gap) + var(--blank-line));
+}
+
+.markdown-rendered>.markdown-preview-section>.markdown-preview-pusher+div:not(.mod-ui)> :is(h1, h2, h3, h4, h5, h6):first-child,
+.markdown-rendered>.markdown-preview-section>.mod-ui+div:not(.mod-ui)> :is(h1, h2, h3, h4, h5, h6):first-child {
+  margin-top: calc(var(--meta-gap) + var(--heading-spacing));
+}
+
+/* Gutters */
+
+body :not(.canvas-node) .markdown-source-view.mod-cm6 .cm-gutters {
+  position: absolute !important;
+  z-index: 0;
+  margin-inline-end: 0;
+}
+
+body :not(.canvas-node) .markdown-source-view.mod-cm6 .cm-gutters .cm-gutter:before {
+  content: "";
+  height: 100%;
+  top: -100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  min-width: var(--folding-offset);
+}
+
+body :not(.canvas-node) .markdown-source-view.mod-cm6.is-rtl .cm-gutters {
+  right: 0;
+}
+
+body {
+  --line-number-color: var(--text-faint);
+  --line-number-color-active: var(--text-muted);
+}
+
+.empty-state-title {
+  display: none;
+}
+
+.markdown-source-view.mod-cm6 .cm-gutters {
+  color: var(--line-number-color) !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-editor .cm-gutterElement.cm-active .cm-heading-marker,
+.markdown-source-view.mod-cm6 .cm-editor .cm-lineNumbers .cm-gutterElement.cm-active {
+  color: var(--line-number-color-active);
+}
+
+.cm-editor .cm-lineNumbers .cm-gutterElement {
+  min-width: var(--folding-offset);
+  padding-inline-end: 0.5em;
+}
+
+.is-rtl .cm-editor .cm-lineNumbers .cm-gutterElement {
+  text-align: left;
+}
+
+/* Line numbers */
+
+@media (max-width: 400pt) {
+  .cm-editor .cm-lineNumbers .cm-gutterElement {
+    padding-inline-end: 4px;
+    padding-inline-start: 8px;
+  }
+}
+
+.cm-editor .cm-lineNumbers .cm-gutterElement.cm-active,
+.cm-editor .cm-gutterElement.cm-active .cm-heading-marker {
+  color: var(--text-muted);
+}
+
+/* Preview mode  */
+
+figure {
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+.markdown-preview-view .mod-highlighted {
+  transition: background-color 0.3s ease;
+  background-color: var(--text-selection);
+  color: inherit;
+}
+
+body .status-bar {
+  background-color: var(--background-primary);
+  --status-bar-border-width: 0;
+}
+
+/* ステータスバーは同期状態だけ出す。バックリンク数・プロパティ数・編集モードは
+コマンドパレットやサイドバーから分かるので常時表示しない */
+
+.status-bar .status-bar-item.plugin-backlink,
+.status-bar .status-bar-item.plugin-properties,
+.status-bar .status-bar-item.plugin-editor-status {
+  display: none;
+}
+
+.status-bar {
+  transition: color 200ms linear;
+  color: var(--text-faint);
+  font-size: var(--font-adaptive-smallest);
+  border-top: none;
+}
+
+.status-bar .status-bar-item {
+  color: var(--text-faint);
+  cursor: var(--cursor) !important;
+}
+
+.status-bar .sync-status-icon.mod-working,
+.status-bar .sync-status-icon.mod-success {
+  color: var(--text-faint);
+}
+
+.status-bar:hover .sync-status-icon.mod-working,
+.status-bar:hover .sync-status-icon.mod-success,
+.status-bar:hover {
+  color: var(--text-muted);
+  transition: color 200ms linear;
+}
+
+.status-bar .plugin-sync:hover .sync-status-icon.mod-working,
+.status-bar .plugin-sync:hover .sync-status-icon.mod-success {
+  color: var(--text-normal);
+}
+
+.status-bar .status-bar-item.mod-clickable:hover {
+  text-align: center;
+  background-color: var(--background-modifier-hover) !important;
+}
+
+/* Title Bar */
+
+.view-header-title-parent,
+.view-header-title {
+  text-overflow: ellipsis;
+}
+
+.view-header-title-container:not(.mod-at-end):after {
+  display: none;
+}
+
+/* 編集 / 閲覧モードの切り替えボタンを隠す。ライブプレビュー固定で使うため。
+アイコンは編集中が book-open、閲覧中が edit-3 の 2 種類。aria-label は UI 言語で
+変わるのでアイコンのクラスで指定する。切り替えが必要なときは Ctrl+E */
+
+.view-action:has(>svg.lucide-book-open),
+.view-action:has(>svg.lucide-edit-3) {
+  display: none;
+}
+
+/* Alignment */
+
+body:not(.is-mobile) .view-actions .view-action:last-child {
+  margin-left: -1px;
+}
+
+body .workspace-ribbon:not(.is-collapsed)~.mod-root .view-actions,
+.workspace-ribbon.mod-left.is-collapsed~.mod-root .view-header:hover .view-actions,
+.mod-right.is-collapsed~.mod-root .view-header:hover .view-actions,
+.view-action.is-active:hover {
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.view-header-title-container {
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.view-header-title-container:focus-within {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.workspace-tab-header-container:hover+.workspace-tab-container .view-header-title-container,
+.view-header:hover .view-header-title-container {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.is-phone .view-header-title-container {
+  opacity: 1;
+}
+
+.titlebar-button-container.mod-right {
+  background-color: transparent !important;
+}
+
+/* Trying for a smoother animation */
+
+.mod-macos.is-hidden-frameless:not(.is-popout-window) .sidebar-toggle-button.mod-right {
+  right: 0;
+  padding-right: var(--size-4-2);
+}
+
+.mod-root .workspace-tab-header-status-icon {
+  color: var(--text-muted);
+}
+
+.is-collapsed .workspace-sidedock-vault-profile {
+  opacity: 0;
+}
+
+/* Components */
+
+.document-search,
+.document-replace {
+  max-width: 100%;
+  padding: 0;
+}
